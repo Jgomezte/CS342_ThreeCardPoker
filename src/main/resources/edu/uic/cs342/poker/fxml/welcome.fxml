@@ -8,6 +8,8 @@
       fx:controller="edu.uic.cs342.poker.controller.WelcomeController"
       alignment="CENTER" spacing="20" styleClass="welcome-root">
     <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
-    <Label fx:id="welcomeLabel" text="welcome to project 1" styleClass="welcome-label"/>
-    <Button text="Start" onAction="#handleStartButton"/>
+    <Label fx:id="titleLabel" text="Three Card Poker" styleClass="title-label"/>
+    <Button text="Play" styleClass="menu-button" onAction="#handlePlayButton"/>
+    <Button text="Tutorial" styleClass="menu-button" onAction="#handleTutorialButton"/>
+    <Button text="Quit" styleClass="menu-button" onAction="#handleQuitButton"/>
 </VBox>
