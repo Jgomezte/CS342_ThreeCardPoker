@@ -1,0 +1,13 @@
+.welcome-root {
+    -fx-background-color: #f5f7fa;
+}
+
+.welcome-label {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.button {
+    -fx-font-size: 14px;
+    -fx-padding: 8px 20px;
+}
