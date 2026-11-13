@@ -8,7 +8,6 @@
     -fx-font-weight: bold;
     -fx-text-fill: #f5c542;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 8, 0.3, 0, 3);
-
 }
 
 .button {
@@ -16,4 +15,285 @@
     -fx-padding: 8px 20px;
 }
 
+.game-root {
+    -fx-background-color: radial-gradient(center 50% 50%, radius 75%, #1f7a4d, #0b3d26);
+}
 
+.nav-button {
+    -fx-background-color: #f4f4f4;
+    -fx-text-fill: #1b1b1b;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+    -fx-border-color: #333333;
+    -fx-border-radius: 6;
+    -fx-cursor: hand;
+}
+
+.phase-label {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f5c542;
+}
+
+.feedback-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #e8f5e9;
+}
+
+.info-circle-button {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #0b3d26;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Serif";
+    -fx-min-width: 34px;
+    -fx-min-height: 34px;
+    -fx-max-width: 34px;
+    -fx-max-height: 34px;
+    -fx-padding: 0;
+    -fx-background-radius: 17px;
+    -fx-border-radius: 17px;
+    -fx-border-color: #0b3d26;
+    -fx-border-width: 2px;
+    -fx-cursor: hand;
+}
+
+.dealer-box {
+    -fx-background-color: rgba(0, 0, 0, 0.25);
+    -fx-border-color: #d4af37;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 12px;
+}
+
+.dealer-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f5c542;
+    -fx-letter-spacing: 2px;
+}
+
+.player-badge {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-border-color: rgba(255, 255, 255, 0.35);
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 16px;
+    -fx-min-width: 120px;
+}
+
+.player-title {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.avatar-box {
+    -fx-background-color: rgba(0, 0, 0, 0.3);
+    -fx-border-color: #f5c542;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-min-width: 48px;
+    -fx-min-height: 48px;
+}
+
+.avatar-icon {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f5c542;
+}
+
+.total-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #a5d6a7;
+}
+
+.card-slot {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #222222;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-min-width: 58px;
+    -fx-min-height: 82px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.35), 4, 0.2, 0, 2);
+}
+
+.card-hidden {
+    -fx-background-color: linear-gradient(to bottom right, #8b1e1e, #5a1010);
+    -fx-border-color: #f5c542;
+}
+
+.card-back-text {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f5c542;
+}
+
+.card-text {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1b1b1b;
+}
+
+.deal-button {
+    -fx-background-color: #e0e0e0;
+    -fx-text-fill: #111111;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-min-width: 100px;
+    -fx-min-height: 42px;
+    -fx-background-radius: 8px;
+    -fx-border-color: #333333;
+    -fx-border-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.player-control-panel {
+    -fx-background-color: rgba(0, 0, 0, 0.28);
+    -fx-border-color: rgba(255, 255, 255, 0.25);
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 10px 16px;
+}
+
+.wager-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-min-width: 36px;
+}
+
+.wager-field {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #444444;
+    -fx-border-radius: 4px;
+}
+
+.stepper-btn {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 1px 6px;
+    -fx-min-width: 22px;
+    -fx-min-height: 16px;
+    -fx-background-color: #e0e0e0;
+    -fx-cursor: hand;
+}
+
+.action-button {
+    -fx-background-color: #d6d6d6;
+    -fx-text-fill: #1b1b1b;
+    -fx-font-weight: bold;
+    -fx-min-width: 85px;
+    -fx-min-height: 36px;
+    -fx-background-radius: 6px;
+    -fx-border-color: #444444;
+    -fx-border-radius: 6px;
+    -fx-cursor: hand;
+}
+
+.tutorial-callout {
+    -fx-background-color: #f6c343;
+    -fx-border-color: #b8860b;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 12px 18px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 8, 0.3, 0, 3);
+}
+
+.tutorial-callout-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1b1b1b;
+}
+
+.tutorial-callout-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #222222;
+}
+
+.tutorial-nav-btn {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #222222;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 12px;
+    -fx-cursor: hand;
+}
+
+.tutorial-nav-btn-primary {
+    -fx-background-color: #1b5e20;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 14px;
+    -fx-cursor: hand;
+}
+
+.tutorial-highlight {
+    -fx-background-color: #f6c343 !important;
+    -fx-border-color: #ffffff !important;
+    -fx-border-width: 2.5px !important;
+    -fx-border-radius: 6px;
+    -fx-background-radius: 6px;
+    -fx-effect: dropshadow(gaussian, #f6c343, 12, 0.6, 0, 0);
+}
+
+.modal-backdrop {
+    -fx-background-color: rgba(0, 0, 0, 0.65);
+}
+
+.info-modal {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #222222;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 14, 0.3, 0, 4);
+}
+
+.modal-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #111111;
+}
+
+.modal-section-header {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0b3d26;
+}
+
+.modal-body-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #222222;
+    -fx-line-spacing: 3px;
+}
+
+.modal-page-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #555555;
+}
+
+.close-circle-button, .arrow-circle-button {
+    -fx-background-color: #eeeeee;
+    -fx-text-fill: #111111;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-min-width: 30px;
+    -fx-min-height: 30px;
+    -fx-max-width: 30px;
+    -fx-max-height: 30px;
+    -fx-padding: 0;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+    -fx-border-color: #444444;
+    -fx-cursor: hand;
+}

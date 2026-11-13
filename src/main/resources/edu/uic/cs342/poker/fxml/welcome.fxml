@@ -2,14 +2,77 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns:fx="http://javafx.com/fxml"
-      fx:controller="edu.uic.cs342.poker.controller.WelcomeController"
-      alignment="CENTER" spacing="20" styleClass="welcome-root">
-    <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
-    <Label fx:id="titleLabel" text="Three Card Poker" styleClass="title-label"/>
-    <Button text="Play" styleClass="menu-button" onAction="#handlePlayButton"/>
-    <Button text="Tutorial" styleClass="menu-button" onAction="#handleTutorialButton"/>
-    <Button text="Quit" styleClass="menu-button" onAction="#handleQuitButton"/>
-</VBox>
+<StackPane xmlns:fx="http://javafx.com/fxml"
+           fx:controller="edu.uic.cs342.poker.controller.WelcomeController"
+           styleClass="welcome-root">
+
+    <BorderPane>
+        <padding>
+            <Insets top="16" right="20" bottom="24" left="20"/>
+        </padding>
+
+        <top>
+            <HBox alignment="CENTER_RIGHT">
+                <Button text="i" styleClass="info-circle-button" onAction="#handleOpenInfo"/>
+            </HBox>
+        </top>
+
+        <center>
+            <VBox alignment="CENTER" spacing="20">
+                <Label fx:id="titleLabel" text="Three Card Poker" styleClass="title-label"/>
+                <Button text="Play" styleClass="menu-button" onAction="#handlePlayButton"/>
+                <Button text="Tutorial" styleClass="menu-button" onAction="#handleTutorialButton"/>
+                <Button text="Quit" styleClass="menu-button" onAction="#handleQuitButton"/>
+            </VBox>
+        </center>
+    </BorderPane>
+
+    <StackPane fx:id="infoOverlay" visible="false" managed="false" styleClass="modal-backdrop">
+        <VBox styleClass="info-modal" maxWidth="420" maxHeight="440" spacing="14">
+            <padding>
+                <Insets top="18" right="22" bottom="18" left="22"/>
+            </padding>
+
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Information" styleClass="modal-title"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="✕" styleClass="close-circle-button" onAction="#handleCloseInfo"/>
+            </HBox>
+
+            <VBox fx:id="infoPage1" spacing="12" VBox.vgrow="ALWAYS">
+                <Label text="Betting:" styleClass="modal-section-header"/>
+                <Label wrapText="true" styleClass="modal-body-text"
+                       text="• Each player places an Ante wager ($5 to $25) to play against the dealer.&#10;• Players may also place an optional Pair Plus wager ($5 to $25) which pays out based solely on your own hand."/>
+
+                <Label text="Dealing &amp; Play:" styleClass="modal-section-header"/>
+                <Label wrapText="true" styleClass="modal-body-text"
+                       text="• Each player and the dealer receive 3 cards. Dealer cards are dealt face down.&#10;• After viewing your cards, choose PLAY (places a Play wager equal to your Ante) or FOLD (forfeits Ante and Pair Plus wagers).&#10;• The dealer must have at least Queen-high to qualify."/>
+            </VBox>
+
+            <VBox fx:id="infoPage2" visible="false" managed="false" spacing="12" VBox.vgrow="ALWAYS">
+                <Label text="Hand Rankings (Highest to Lowest):" styleClass="modal-section-header"/>
+                <Label wrapText="true" styleClass="modal-body-text"
+                       text="1. Straight Flush (e.g., 10♠ 9♠ 8♠)&#10;2. Three of a Kind (e.g., Q♥ Q♦ Q♣)&#10;3. Straight (e.g., 8♣ 7♠ 6♦)&#10;4. Flush (3 cards of the same suit)&#10;5. Pair (2 cards of the same rank)&#10;6. High Card"/>
+
+                <Label text="Pair Plus Payouts:" styleClass="modal-section-header"/>
+                <Label wrapText="true" styleClass="modal-body-text"
+                       text="• Straight Flush: 40 to 1&#10;• Three of a Kind: 30 to 1&#10;• Straight: 6 to 1&#10;• Flush: 3 to 1&#10;• Pair: 1 to 1"/>
+            </VBox>
+
+            <HBox alignment="CENTER">
+                <Button fx:id="infoPrevBtn" text="←" styleClass="arrow-circle-button" onAction="#handleInfoPrevPage" visible="false"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="infoPageIndicator" text="Page 1 of 2" styleClass="modal-page-label"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button fx:id="infoNextBtn" text="→" styleClass="arrow-circle-button" onAction="#handleInfoNextPage"/>
+            </HBox>
+        </VBox>
+    </StackPane>
+
+</StackPane>
