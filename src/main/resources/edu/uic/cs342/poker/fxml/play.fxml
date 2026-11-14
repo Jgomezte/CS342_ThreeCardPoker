@@ -25,7 +25,8 @@
                 <Region HBox.hgrow="ALWAYS"/>
                 <VBox alignment="CENTER" spacing="2">
                     <Label fx:id="phaseLabel" text="PHASE: PLACE WAGERS" styleClass="phase-label"/>
-                    <Label fx:id="feedbackLabel" text="Place an Ante ($5–$25) and optional Pair Plus bet, then press DEAL." styleClass="feedback-label"/>
+                    <Label fx:id="feedbackLabel" text="Place an Ante ($5–$25) and optional Pair Plus bet, then press DEAL."
+                           styleClass="feedback-label" wrapText="true" maxWidth="520" textAlignment="CENTER"/>
                 </VBox>
                 <Region HBox.hgrow="ALWAYS"/>
                 <Button text="i" styleClass="info-circle-button" onAction="#handleOpenInfo"/>
@@ -44,7 +45,7 @@
                         <StackPane styleClass="avatar-box">
                             <Label text="+" styleClass="avatar-icon"/>
                         </StackPane>
-                        <Label fx:id="p1TotalLabel" text="Total: $0" styleClass="total-label"/>
+                        <Label fx:id="p1TotalLabel" text="Total: $100" styleClass="total-label"/>
                     </VBox>
 
                     <VBox alignment="CENTER" spacing="10" styleClass="dealer-box" prefWidth="360" prefHeight="150">
@@ -67,7 +68,7 @@
                         <StackPane styleClass="avatar-box">
                             <Label text="★" styleClass="avatar-icon"/>
                         </StackPane>
-                        <Label fx:id="p2TotalLabel" text="Total: $0" styleClass="total-label"/>
+                        <Label fx:id="p2TotalLabel" text="Total: $100" styleClass="total-label"/>
                     </VBox>
                 </HBox>
 
@@ -84,7 +85,7 @@
                         </StackPane>
                     </HBox>
 
-                    <Button fx:id="dealButton" text="DEAL" styleClass="deal-button"/>
+                    <Button fx:id="dealButton" text="DEAL" styleClass="deal-button" onAction="#handleDeal"/>
 
                     <HBox alignment="CENTER" spacing="10">
                         <StackPane fx:id="p2Card1" styleClass="card-slot">
@@ -109,45 +110,45 @@
                             <Label text="PAIR&#10;PLUS" styleClass="wager-label"/>
                             <TextField fx:id="p1PairPlusField" text="\$0" editable="false" prefWidth="55" styleClass="wager-field"/>
                             <VBox spacing="2">
-                                <Button text="+" styleClass="stepper-btn"/>
-                                <Button text="-" styleClass="stepper-btn"/>
+                                <Button text="+" styleClass="stepper-btn" onAction="#handleP1PairPlusUp"/>
+                                <Button text="-" styleClass="stepper-btn" onAction="#handleP1PairPlusDown"/>
                             </VBox>
                         </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="6">
                             <Label text="ANTE" styleClass="wager-label"/>
                             <TextField fx:id="p1AnteField" text="\$5" editable="false" prefWidth="55" styleClass="wager-field"/>
                             <VBox spacing="2">
-                                <Button text="+" styleClass="stepper-btn"/>
-                                <Button text="-" styleClass="stepper-btn"/>
+                                <Button text="+" styleClass="stepper-btn" onAction="#handleP1AnteUp"/>
+                                <Button text="-" styleClass="stepper-btn" onAction="#handleP1AnteDown"/>
                             </VBox>
                         </HBox>
                     </VBox>
 
                     <VBox alignment="CENTER" spacing="10">
-                        <Button fx:id="p1PlayButton" text="PLAY" styleClass="action-button"/>
-                        <Button fx:id="p1FoldButton" text="FOLD" styleClass="action-button"/>
+                        <Button fx:id="p1PlayButton" text="PLAY" styleClass="action-button" onAction="#handleP1Play"/>
+                        <Button fx:id="p1FoldButton" text="FOLD" styleClass="action-button" onAction="#handleP1Fold"/>
                     </VBox>
                 </HBox>
 
                 <HBox alignment="CENTER" spacing="14" styleClass="player-control-panel">
                     <VBox alignment="CENTER" spacing="10">
-                        <Button fx:id="p2PlayButton" text="PLAY" styleClass="action-button"/>
-                        <Button fx:id="p2FoldButton" text="FOLD" styleClass="action-button"/>
+                        <Button fx:id="p2PlayButton" text="PLAY" styleClass="action-button" onAction="#handleP2Play"/>
+                        <Button fx:id="p2FoldButton" text="FOLD" styleClass="action-button" onAction="#handleP2Fold"/>
                     </VBox>
 
                     <VBox alignment="CENTER_RIGHT" spacing="10">
                         <HBox alignment="CENTER_RIGHT" spacing="6">
                             <VBox spacing="2">
-                                <Button text="+" styleClass="stepper-btn"/>
-                                <Button text="-" styleClass="stepper-btn"/>
+                                <Button text="+" styleClass="stepper-btn" onAction="#handleP2PairPlusUp"/>
+                                <Button text="-" styleClass="stepper-btn" onAction="#handleP2PairPlusDown"/>
                             </VBox>
                             <TextField fx:id="p2PairPlusField" text="\$0" editable="false" prefWidth="55" styleClass="wager-field"/>
                             <Label text="PAIR&#10;PLUS" styleClass="wager-label"/>
                         </HBox>
                         <HBox alignment="CENTER_RIGHT" spacing="6">
                             <VBox spacing="2">
-                                <Button text="+" styleClass="stepper-btn"/>
-                                <Button text="-" styleClass="stepper-btn"/>
+                                <Button text="+" styleClass="stepper-btn" onAction="#handleP2AnteUp"/>
+                                <Button text="-" styleClass="stepper-btn" onAction="#handleP2AnteDown"/>
                             </VBox>
                             <TextField fx:id="p2AnteField" text="\$5" editable="false" prefWidth="55" styleClass="wager-field"/>
                             <Label text="ANTE" styleClass="wager-label"/>
@@ -157,6 +158,8 @@
             </HBox>
         </bottom>
     </BorderPane>
+
+    <!--    info section-->
 
     <StackPane fx:id="infoOverlay" visible="false" managed="false" styleClass="modal-backdrop">
         <VBox styleClass="info-modal" maxWidth="420" maxHeight="440" spacing="14">
