@@ -18,7 +18,8 @@
         </padding>
 
         <top>
-            <HBox alignment="CENTER_RIGHT">
+            <HBox alignment="CENTER_RIGHT" spacing="15">
+                <Button text="☾" styleClass="info-circle-button" onAction="#handleToggleNight"/>
                 <Button text="i" styleClass="info-circle-button" onAction="#handleOpenInfo"/>
             </HBox>
         </top>

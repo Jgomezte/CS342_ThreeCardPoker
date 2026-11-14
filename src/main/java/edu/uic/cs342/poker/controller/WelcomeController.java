@@ -1,5 +1,6 @@
 package edu.uic.cs342.poker.controller;
 
+import edu.uic.cs342.poker.ThemeManager;
 import javafx.animation.Animation;
 import javafx.animation.ScaleTransition;
 import javafx.application.Platform;
@@ -93,9 +94,16 @@ public class WelcomeController {
         infoPageIndicator.setText("Page " + page + " of 2");
     }
 
+    @FXML
+    private void handleToggleNight(ActionEvent event) {
+        Parent root = ((Node) event.getSource()).getScene().getRoot();
+        ThemeManager.toggle(root);
+    }
+
     private void switchScene(ActionEvent event, String fxmlPath) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
         Parent root = loader.load();
+        ThemeManager.apply(root);
         Scene scene = new Scene(root, 800, 600);
         scene.getStylesheets().add(
                 getClass().getResource("/edu/uic/cs342/poker/css/style.css").toExternalForm());

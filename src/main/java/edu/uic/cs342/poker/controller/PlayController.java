@@ -1,9 +1,17 @@
 package edu.uic.cs342.poker.controller;
 
+import edu.uic.cs342.poker.ThemeManager;
 import edu.uic.cs342.poker.model.Card;
 import edu.uic.cs342.poker.model.GameService;
 import edu.uic.cs342.poker.model.Rank;
 import edu.uic.cs342.poker.model.Suit;
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
+import javafx.animation.Interpolator;
+import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,13 +24,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.List;
 
 public class PlayController {
-
-    // ---------- FXML fields ----------
 
     @FXML private Label phaseLabel;
     @FXML private Label feedbackLabel;
@@ -52,6 +59,14 @@ public class PlayController {
 
     private static final String HIDDEN_CLASS = "card-hidden";
     private static final String ERROR_STYLE = "-fx-text-fill: #ff8a80;";
+    private static final String GAIN_STYLE = "-fx-text-fill: #69f0ae;";
+    private static final String LOSS_STYLE = "-fx-text-fill: #ff8a80;";
+
+    private static final int DEAL_MOVE_MS = 350;
+    private static final int DEAL_STAGGER_MS = 120;
+    private static final int FLIP_HALF_MS = 180;
+    private static final int FLIP_STAGGER_MS = 250;
+    private static final int PULSE_MS = 300;
 
     private GameService game;
     private StackPane[] dealerCards;
@@ -69,7 +84,6 @@ public class PlayController {
         prepareWagerPhase();
         updateTotals();
     }
-
 
     @FXML
     private void handleDeal() {
@@ -110,11 +124,15 @@ public class PlayController {
 
         setWagerControlsDisabled(true);
         dealButton.setDisable(true);
-        setDecisionButtonsDisabled(1, false);
-        setDecisionButtonsDisabled(2, false);
-
         updatePhaseLabel();
-        showInfo("Each player: look at your cards, then choose PLAY or FOLD.");
+        showInfo("Dealing...");
+
+        // Play and Fold stay disabled until the last card has landed.
+        animateDeal(() -> {
+            setDecisionButtonsDisabled(1, false);
+            setDecisionButtonsDisabled(2, false);
+            showInfo("Each player: look at your cards, then choose PLAY or FOLD.");
+        });
     }
 
 
@@ -143,14 +161,19 @@ public class PlayController {
         }
     }
 
+    // Settles the round right away, then reveals the dealer's cards one at a
+    // time, and only then shows the results and updates the totals.
     private void finishRound() {
         game.settleRound();
-
-        if (game.isDealerHandRevealed()) {
-            showHand(dealerCards, game.getDealerHand());
-        }
-        updateTotals();
         updatePhaseLabel();
+        showInfo("Dealer reveals their hand...");
+        revealDealerHand(this::showRoundResults);
+    }
+
+    private void showRoundResults() {
+        updateTotals();
+        pulseTotal(p1TotalLabel, game.getOutcome(1).net());
+        pulseTotal(p2TotalLabel, game.getOutcome(2).net());
 
         StringBuilder message = new StringBuilder();
         message.append(game.isDealerQualified()
@@ -161,8 +184,11 @@ public class PlayController {
 
         if (game.isGameOver()) {
             for (int n = 1; n <= 2; n++) {
-                if (game.getBalance(n) < 2 * GameService.MIN_BET) {
+                int balance = game.getBalance(n);
+                if (balance <= 0) {
                     message.append("\nPlayer ").append(n).append(" is out of money.");
+                } else if (balance < 2 * GameService.MIN_BET) {
+                    message.append("\nPlayer ").append(n).append(" can't cover the minimum bet.");
                 }
             }
             message.append("\nGame over.");
@@ -193,6 +219,72 @@ public class PlayController {
         return line.toString();
     }
 
+    // Animations
+    private void animateDeal(Runnable onDone) {
+        ParallelTransition all = new ParallelTransition();
+        int order = 0;
+        for (int i = 0; i < 3; i++) {
+            all.getChildren().add(dealIn(p1Cards[i], order++));
+            all.getChildren().add(dealIn(p2Cards[i], order++));
+        }
+        all.setOnFinished(e -> onDone.run());
+        all.play();
+    }
+
+    private Animation dealIn(StackPane slot, int order) {
+        slot.setOpacity(0);
+        slot.setTranslateY(-140);
+
+        TranslateTransition move = new TranslateTransition(Duration.millis(DEAL_MOVE_MS), slot);
+        move.setToY(0);
+        move.setInterpolator(Interpolator.EASE_OUT);
+
+        FadeTransition fade = new FadeTransition(Duration.millis(DEAL_MOVE_MS), slot);
+        fade.setToValue(1);
+
+        ParallelTransition card = new ParallelTransition(move, fade);
+        card.setDelay(Duration.millis(order * DEAL_STAGGER_MS));
+        return card;
+    }
+
+    private void revealDealerHand(Runnable onDone) {
+        List<Card> hand = game.getDealerHand();
+        ParallelTransition reveal = new ParallelTransition();
+        for (int i = 0; i < dealerCards.length; i++) {
+            reveal.getChildren().add(flip(dealerCards[i], hand.get(i), i));
+        }
+        reveal.setOnFinished(e -> onDone.run());
+        reveal.play();
+    }
+
+    private Animation flip(StackPane slot, Card card, int order) {
+        ScaleTransition close = new ScaleTransition(Duration.millis(FLIP_HALF_MS), slot);
+        close.setFromX(1);
+        close.setToX(0);
+        close.setOnFinished(e -> showFaceUp(slot, card));
+
+        ScaleTransition open = new ScaleTransition(Duration.millis(FLIP_HALF_MS), slot);
+        open.setFromX(0);
+        open.setToX(1);
+
+        SequentialTransition flip = new SequentialTransition(close, open);
+        flip.setDelay(Duration.millis(order * FLIP_STAGGER_MS));
+        return flip;
+    }
+
+    private void pulseTotal(Label label, int net) {
+        if (net == 0) {
+            return;
+        }
+        label.setStyle(net > 0 ? GAIN_STYLE : LOSS_STYLE);
+
+        ScaleTransition pulse = new ScaleTransition(Duration.millis(PULSE_MS), label);
+        pulse.setToX(1.35);
+        pulse.setToY(1.35);
+        pulse.setAutoReverse(true);
+        pulse.setCycleCount(2);
+        pulse.play();
+    }
 
     @FXML private void handleP1AnteUp() { adjust(p1AnteField, +1, true); }
     @FXML private void handleP1AnteDown() { adjust(p1AnteField, -1, true); }
@@ -232,7 +324,6 @@ public class PlayController {
         p2PairPlusField.setText("$0");
     }
 
-
     private void prepareWagerPhase() {
         for (StackPane slot : p1Cards) {
             showBlank(slot);
@@ -243,6 +334,10 @@ public class PlayController {
         for (StackPane slot : dealerCards) {
             showFaceDown(slot);
         }
+
+        // clear the green/red tint left over from the last round
+        p1TotalLabel.setStyle("");
+        p2TotalLabel.setStyle("");
 
         setWagerControlsDisabled(false);
         setDecisionButtonsDisabled(1, true);
@@ -297,7 +392,6 @@ public class PlayController {
         feedbackLabel.setText(message);
     }
 
-
     private void showHand(StackPane[] slots, List<Card> hand) {
         for (int i = 0; i < slots.length; i++) {
             showFaceUp(slots[i], hand.get(i));
@@ -315,6 +409,7 @@ public class PlayController {
     }
 
     private void showFaceDown(StackPane slot) {
+        resetTransforms(slot);
         if (!slot.getStyleClass().contains(HIDDEN_CLASS)) {
             slot.getStyleClass().add(HIDDEN_CLASS);
         }
@@ -324,10 +419,18 @@ public class PlayController {
     }
 
     private void showBlank(StackPane slot) {
+        resetTransforms(slot);
         slot.getStyleClass().remove(HIDDEN_CLASS);
         Label label = new Label("");
         label.getStyleClass().add("card-text");
         slot.getChildren().setAll(label);
+    }
+
+    // undo whatever an animation left behind on a card slot
+    private void resetTransforms(StackPane slot) {
+        slot.setScaleX(1);
+        slot.setOpacity(1);
+        slot.setTranslateY(0);
     }
 
     private static String rankSymbol(Rank rank) {
@@ -348,7 +451,6 @@ public class PlayController {
             case SPADES -> "♠";
         };
     }
-
 
     // Accepts "5", "$5", " $ 5 ". Throws a user-readable IllegalArgumentException otherwise.
     private int parseAmount(TextField field, boolean blankMeansZero, String name) {
@@ -376,18 +478,17 @@ public class PlayController {
         return "$0";
     }
 
-
     @FXML
     private void handleBackToMenu(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/edu/uic/cs342/poker/fxml/welcome.fxml"));
         Parent root = loader.load();
+        ThemeManager.apply(root);
         Scene scene = new Scene(root, 800, 600);
         scene.getStylesheets().add(
                 getClass().getResource("/edu/uic/cs342/poker/css/style.css").toExternalForm());
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(scene);
     }
-
 
     @FXML
     private void handleOpenInfo() {
@@ -423,5 +524,11 @@ public class PlayController {
         infoPrevBtn.setVisible(!isPage1);
         infoNextBtn.setVisible(isPage1);
         infoPageIndicator.setText("Page " + page + " of 2");
+    }
+
+    @FXML
+    private void handleToggleNight(ActionEvent event) {
+        Parent root = ((Node) event.getSource()).getScene().getRoot();
+        ThemeManager.toggle(root);
     }
 }

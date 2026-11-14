@@ -29,6 +29,7 @@
                            styleClass="feedback-label" wrapText="true" maxWidth="520" textAlignment="CENTER"/>
                 </VBox>
                 <Region HBox.hgrow="ALWAYS"/>
+                <Button text="☾" styleClass="info-circle-button" onAction="#handleToggleNight"/>
                 <Button text="i" styleClass="info-circle-button" onAction="#handleOpenInfo"/>
             </HBox>
         </top>
