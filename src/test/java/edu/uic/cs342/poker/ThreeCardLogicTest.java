@@ -170,4 +170,3 @@ public class ThreeCardLogicTest {
                 ThreeCardLogic.compareHands(hand("KS", "7D", "2C"), hand("KH", "7C", "2D")));
     }
 }
-
